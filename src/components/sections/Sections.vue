@@ -41,14 +41,12 @@
           ></font-awesome-icon>
         </td>
         <td class="info-cell">
-          <!-- <i
-            class="fas fa-cog"
-            tabindex="-1"
-            title="Settings"
-            style="font-size:1.9rem"
+          <font-awesome-icon
+            :icon="['fas', 'info-circle']"
+            class="open_close_icon"
             v-b-modal.prerequisite-modal
             v-on:click="$emit('open-prerequisite-modal', section.crn)"
-          ></i> -->
+          ></font-awesome-icon>
           <span class="font-weight-bold" title="Section number">{{
             section.sec
           }}</span
