@@ -5,10 +5,12 @@ function timeout(ms) {
 }
 
 export const helloWorld = async (params) => {
+  let i=0;
   // heavy computing goes here
-  console.log("starting webworker script");
-  await timeout(5000);
-  console.log("done with webworker script");
+  let start = new Date().getTime();
+  while(new Date().getTime() - start < 4000){
+    i++;
+  }
 
-  return "worker done message";
+  return "worker done message "+i;
 };

@@ -51,7 +51,7 @@
       <div class="container-fluid" style="margin-top: 1rem;">
         <div class="row">
           <div class="col-lg-1"></div>
-          <div class="col-lg">{{msg}}<router-view /></div>
+          <div class="col-lg"><b-button @click="runWorker()">Restart Webworker</b-button>{{msg}}<router-view /></div>
           <div class="col-lg-1"></div>
         </div>
       </div>
@@ -93,15 +93,17 @@ import { helloWorld } from "@/utils.worker";
 @Component({
   components: {
     Settings,
-  },
-  async mounted() {
-    this.msg = await helloWorld();
-  },
+  }
 })
 export default class App extends Vue {
   searchCallback: number | null = null;
   searching = false;
   msg = "Old non webworker text";
+
+  async runWorker(){
+    this.msg="starting worker"
+    this.msg = await helloWorld();
+  }
 
   search(input: string, searchTimeout = 250) {
     this.searching = true;
