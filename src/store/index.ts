@@ -82,7 +82,7 @@ export default new Vuex.Store({
       ],
       rehydrated: (store) => {
         // @ts-expect-error: Typescript doesn't know that `store` has commit and state attributes
-        store.commit("sections/populateConflicts", store.state.departments);
+        store.commit("sections/generateSchedulesAndConflicts");
       },
     }),
   ],

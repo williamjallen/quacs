@@ -155,10 +155,7 @@ export default class Section extends Vue {
       state: selected,
     });
     if (rePopulateConflicts) {
-      this.$store.commit(
-        "sections/populateConflicts",
-        this.$store.state.departments
-      );
+      this.$store.commit("sections/generateSchedulesAndConflicts");
     }
   }
 
@@ -176,10 +173,7 @@ export default class Section extends Vue {
       }
     }
 
-    this.$store.commit(
-      "sections/populateConflicts",
-      this.$store.state.departments
-    );
+    this.$store.commit("sections/generateSchedulesAndConflicts");
   }
 
   // Calculates the order of the timeslots for each section

@@ -56,6 +56,7 @@ new Vue({
   store,
   render: (h) => h(App),
   beforeCreate() {
+    this.$store.dispatch("sections/initWasm");
     this.$store.commit("sections/initializeStore");
     this.$store.commit(
       "sections/initializeDataMappings",

@@ -7,7 +7,7 @@
       >
     </div>
 
-    <!-- <div class="warning-message" v-else-if="totalNumSchedules === 0">
+    <!-- <div class="warning-message" v-else-if="numSchedules === 0">
       <h3>
         Uh oh! All possible schedules have conflicts! Try choosing more
         sections.
@@ -16,13 +16,13 @@
 
     <div style="padding-bottom: 2rem;" v-else>
       <div class="schedule-select">
-        <div v-if="totalNumSchedules !== 0">
+        <div v-if="numSchedules !== 0">
           <b-icon-chevron-left
             class="schedule-select-button"
             v-on:click="decrementSchedule()"
           ></b-icon-chevron-left>
           <span class="schedule-num">
-            {{ visibleCurrentScheduleNumber }} / {{ totalNumSchedules }}
+            {{ visibleCurrentScheduleNumber }} / {{ numSchedules }}
           </span>
           <b-icon-chevron-right
             class="schedule-select-button"
@@ -104,7 +104,7 @@ export default class Schedule extends Vue {
   }
 
   mounted() {
-    // if (this.$route.query.crns === undefined && this.totalNumSchedules > 0) {
+    // if (this.$route.query.crns === undefined && this.numSchedules > 0) {
     //   this.$router.replace(
     //     "/schedule?crns=" + this.currentScheduleCRNs.join(",")
     //   );
@@ -116,12 +116,12 @@ export default class Schedule extends Vue {
     this.prerequisiteModalCrn = crn;
   }
 
-  get totalNumSchedules() {
-    return this.$store.getters["sections/schedules"].length;
+  get numSchedules() {
+    return this.$store.getters["sections/numSchedules"];
   }
 
   get visibleCurrentScheduleNumber() {
-    if (this.$store.getters["sections/schedules"].length === 0) {
+    if (this.numSchedules === 0) {
       this.currentScheduleNumber = 0;
       return 0;
     }
@@ -129,16 +129,16 @@ export default class Schedule extends Vue {
   }
 
   get currentScheduleCRNs() {
-    if (this.$store.getters["sections/schedules"].length === 0) {
+    if (this.numSchedules === 0) {
       this.$router.replace("/schedule").catch(() => {
         return;
       });
       return [];
     }
 
-    const crns = this.$store.getters["sections/schedules"][
+    const crns = this.$store.getters["sections/scheduleCRNs"](
       this.currentScheduleNumber
-    ];
+    );
 
     this.$router.replace("/schedule?crns=" + crns.join(",")).catch(() => {
       return;
@@ -149,14 +149,14 @@ export default class Schedule extends Vue {
   incrementSchedule() {
     this.currentScheduleNumber = mod(
       this.currentScheduleNumber + 1,
-      this.totalNumSchedules
+      this.numSchedules
     );
   }
 
   decrementSchedule() {
     this.currentScheduleNumber = mod(
       this.currentScheduleNumber - 1,
-      this.totalNumSchedules
+      this.numSchedules
     );
   }
 

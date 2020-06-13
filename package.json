@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "./build_wasm.sh debug && vue-cli-service serve",
+    "build": "./build_wasm.sh && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "gh-pages-deploy": "sh scripts/gh-pages-deploy.sh"
   },
@@ -56,6 +56,7 @@
     "env": {
       "node": true
     },
+    "ignorePatterns": ["quacs_rs*"],
     "extends": [
       "plugin:vue/essential",
       "eslint:recommended",

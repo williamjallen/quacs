@@ -78,7 +78,7 @@ import { mapGetters } from "vuex";
   },
 })
 export default class Calendar extends Vue {
-  @Prop() readonly crns!: string[];
+  @Prop() readonly crns!: Uint32Array;
   readonly startTime = 480;
   readonly endTime = 1320;
   readonly totalHeight = 600;
@@ -102,11 +102,15 @@ export default class Calendar extends Vue {
     return (60 * 100) / this.numMinutes;
   }
 
-  get selected() {
-    return this.crns.map(
-      (crn: string) =>
-        this.$store.getters["sections/crnToCourseAndSection"](crn).sec
+  get selected(): CourseSection[] {
+    const ret: CourseSection[] = [];
+
+    // Disable unused argument warning
+    // eslint-disable-next-line
+    this.crns.forEach((crn: number, _idx: number, _arr: Uint32Array) =>
+      ret.push(this.$store.getters["sections/crnToCourseAndSection"](crn).sec)
     );
+    return ret;
   }
 
   get sessionsOnDay() {
