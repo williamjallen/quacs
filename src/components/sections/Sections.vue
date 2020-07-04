@@ -16,7 +16,7 @@
 
     <tbody>
       <tr
-        v-for="section in course.sections"
+        v-for="(section, idx) in course.sections"
         v-bind:key="section.crn"
         class="course-row select-section"
         v-bind:class="{
@@ -28,7 +28,8 @@
             prerequisiteCheckingState &&
             !isSelected(section.crn),
         }"
-        v-on:click="toggleSelection(section)"
+        v-on:click.exact="toggleSelection(section)"
+        v-on:click.shift="toggleShift(section, idx)"
         tabindex="0"
         v-on:keyup.enter="toggleSelection(section)"
       >
@@ -235,6 +236,27 @@ export default class Section extends Vue {
       for (const section of this.course.sections) {
         this.toggleSelection(section, false, false);
       }
+    }
+
+    this.$store.dispatch("schedule/generateCurrentSchedulesAndConflicts");
+  }
+
+  toggleShift(section: CourseSection, idx: number) {
+    const firstSelectedIdx = this.course.sections.findIndex((sec) =>
+      // @ts-expect-error: This is given from the component getter
+      this.isSelected(sec.crn)
+    );
+
+    if (idx === firstSelectedIdx || firstSelectedIdx === -1) {
+      this.toggleSelection(section);
+      return;
+    }
+
+    const startIdx = firstSelectedIdx < idx ? firstSelectedIdx : idx;
+    const endIdx = firstSelectedIdx < idx ? idx : firstSelectedIdx;
+
+    for (let i = startIdx; i <= endIdx; i++) {
+      this.toggleSelection(this.course.sections[i], true, false);
     }
 
     this.$store.dispatch("schedule/generateCurrentSchedulesAndConflicts");
